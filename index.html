@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NovaCopilot Open Agents: Developer Documentation</title>
+<meta name="description" content="Open source legal, compliance, regulatory, case law and risk agents. Source-bound answers with proof, no key required. Powered by NovaCopilot.">
+<link rel="canonical" href="https://stigprivate-design.github.io/nova-open-agents-docs/">
+<style>
+:root{--ink:#0f1b2d;--muted:#5a6678;--line:#e3e7ed;--accent:#0b5cad;--bg:#fbfcfd}
+*{box-sizing:border-box}body{margin:0;font:16px/1.6 Georgia,"Charter",serif;color:var(--ink);background:var(--bg)}
+header{border-bottom:1px solid var(--line);background:#fff}
+.wrap{max-width:920px;margin:0 auto;padding:0 24px}
+nav{display:flex;justify-content:space-between;align-items:center;height:64px;font-family:system-ui,sans-serif;font-size:14px}
+nav a{color:var(--ink);margin-left:20px;text-decoration:none}nav strong{letter-spacing:.04em}
+h1{font-size:40px;line-height:1.15;margin:56px 0 16px;font-weight:500}
+h2{font-size:24px;margin:48px 0 12px;font-weight:500;border-top:1px solid var(--line);padding-top:24px}
+.lead{font-size:19px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-family:system-ui,sans-serif;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-weight:600}
+code,pre{font-family:ui-monospace,Menlo,monospace;font-size:13px}
+pre{background:#0f1b2d;color:#e6edf5;padding:18px;border-radius:6px;overflow-x:auto}
+ul{padding-left:20px}a{color:var(--accent)}
+.btn{display:inline-block;padding:10px 18px;border:1px solid var(--ink);color:var(--ink);text-decoration:none;font-family:system-ui,sans-serif;font-size:14px;margin:8px 8px 0 0}
+.btn.primary{background:var(--ink);color:#fff}
+footer{margin-top:64px;border-top:1px solid var(--line);padding:24px 0 48px;color:var(--muted);font-family:system-ui,sans-serif;font-size:13px}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"NovaCopilot Open Agents","codeRepository":"https://github.com/stigprivate-design/nova-open-agents","license":"https://www.apache.org/licenses/LICENSE-2.0","programmingLanguage":["TypeScript","Python"],"version":"1.2.0","publisher":{"@type":"Organization","name":"Valkiv Ventures AB","url":"https://valkivventures.com"}}</script>
+</head>
+<body>
+<header><div class="wrap"><nav><strong>NOVACOPILOT OPEN AGENTS</strong><span><a href="#agents">Agents</a><a href="#quickstart">Quick start</a><a href="#endpoints">Endpoints</a><a href="#enterprise">Enterprise</a><a href="https://github.com/stigprivate-design/nova-open-agents">GitHub</a></span></nav></div></header>
+<main class="wrap">
+<h1>Regulatory intelligence as machine-readable agent objects</h1>
+<p class="lead">Five open source agents for legal, compliance, regulatory, case law and risk questions. Every answer carries its source and proof. No key, no contract, no pilot. You need no RAG, GPU or own rule interpretation.</p>
+<a class="btn primary" href="https://github.com/stigprivate-design/nova-open-agents">Source code on GitHub</a><a class="btn" href="https://legal.exploreworldai.com/api/public/v1/discovery">Machine starting point</a>
+
+<h2 id="agents">Agents</h2>
+<table><tr><th>Agent</th><th>Question</th><th>Coverage</th></tr>
+<tr><td><code>legalAgent</code></td><td>What applies?</td><td>Provision node with case law and evidence chain (SE, NO, US, EU)</td></tr>
+<tr><td><code>complianceAgent</code></td><td>What must we do?</td><td>Obligations from a company profile: country, industry, employees, turnover</td></tr>
+<tr><td><code>regulatoryAgent</code></td><td>What changed this week?</td><td>GDPR, DORA, AI Act, NIS2, CSRD, eIDAS, MiCA, DSA, Data Act, AMLR with Official Journal dates and the current consolidated EUR-Lex version</td></tr>
+<tr><td><code>caseLawAgent</code></td><td>How have courts decided?</td><td>Hash-chained case law lines for the EU, the US (incl. Supreme Court), Sweden and Norway</td></tr>
+<tr><td><code>riskAgent</code></td><td>What do we risk?</td><td>Risk objects, sanctions and supervisory decisions in one answer</td></tr></table>
+
+<h2>Trust by design</h2>
+<ul>
+<li><strong>Source on every answer.</strong> Source URL, server proof and a local <code>receipt_sha256</code> of the exact response, usable as an audit trail.</li>
+<li><strong>No guessing.</strong> Missing data is returned as <code>not_in_register</code>.</li>
+<li><strong>Stable identifiers.</strong> Object IDs and published hash formulas are append-only, so stored evidence stays valid.</li>
+<li><strong>Daily verification.</strong> EUR-Lex, national courts and registers are checked every day.</li>
+<li><strong>Zero dependencies.</strong> Python standard library and plain <code>fetch</code> in TypeScript.</li>
+</ul>
+
+<h2 id="quickstart">Quick start</h2>
+<pre>git clone https://github.com/stigprivate-design/nova-open-agents
+cd nova-open-agents
+node --experimental-strip-types examples/risk-and-case-law.ts</pre>
+<pre>import { regulatoryAgent, riskAgent, caseLawAgent } from "./index.ts";
+
+const mica = await regulatoryAgent("mica");      // official dates + consolidated version
+const risk = await riskAgent("gdpr");            // risk, sanctions, decisions
+const cases = await caseLawAgent("sherman-act", "us");
+console.log(mica.proof, risk.objects, cases.objects);</pre>
+<pre>from nova import regulatory_agent, risk_agent
+print(regulatory_agent("dora")["objects"]["official_text"])
+print(risk_agent("gdpr")["proof"])</pre>
+
+<h2 id="endpoints">Open endpoints</h2>
+<p>Base: <code>https://legal.exploreworldai.com/api/public/v1</code></p>
+<table><tr><th>Endpoint</th><th>Used by</th></tr>
+<tr><td><code>/provision-node?id=</code></td><td>legalAgent</td></tr>
+<tr><td><code>/decision?country=&amp;industry=&amp;employees=</code></td><td>complianceAgent</td></tr>
+<tr><td><code>/regulation-week?reg=</code></td><td>regulatoryAgent</td></tr>
+<tr><td><code>/praxis-line?act=&amp;jurisdiction=</code></td><td>caseLawAgent</td></tr>
+<tr><td><code>/risk-assess?act=</code>, <code>/sanctions?act=</code>, <code>/enforcement?</code></td><td>riskAgent</td></tr>
+<tr><td><code>/duty-objects</code>, <code>/graph/obligation|provenance|action</code></td><td>SDK</td></tr></table>
+<p>MCP: <code>https://legal.exploreworldai.com/.well-known/mcp.json</code></p>
+
+<h2>Fair use</h2>
+<p>Open access is free. Identify your integration with a clear User-Agent; the SDK sends <code>NovaOpenAgent/&lt;version&gt;</code>. Unknown high-volume crawlers are limited to 100 requests per minute.</p>
+
+<h2 id="enterprise">Enterprise</h2>
+<p>The open agents and endpoints are free and stay free. Organisations that need contractual guarantees can agree on NovaCopilot Enterprise: service level agreement, dedicated support, higher volumes, private deployment and onboarding for compliance, risk and audit teams. Contact: <a href="mailto:stig@valkiv.com">stig@valkiv.com</a></p>
+</main>
+<footer><div class="wrap">Code under Apache 2.0. Data delivered by NovaCopilot, cite as "Source: NovaCopilot". Answers are machine-readable reference material, not legal advice.<br>Product: <a href="https://explorecopilotai.com">explorecopilotai.com</a> &middot; Publisher: Valkiv Ventures AB, <a href="https://valkivventures.com">valkivventures.com</a></div></footer>
+</body>
+</html>
